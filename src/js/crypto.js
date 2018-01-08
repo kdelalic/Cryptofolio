@@ -5,6 +5,8 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add'
 import AddCoin from './addcoin.js';
 import axios from 'axios'
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import Paper from 'material-ui/Paper';
 
 
 
@@ -71,27 +73,33 @@ class Crypto extends Component {
 		const { coins } = this.state;
 		return (
 			<div className="crypto">
-				<div className="header">
-					<div className="coin">Coin</div>
-					<div className="price">Current Price</div>
-					<div className="total">Total Value</div>
-					<div className="profit">Profit/Loss</div>
-					<div className="change">Change</div>
-				</div>
-
-				{coins && Object.keys(coins).map((key, index) => {
-					const coin = coins[key]
-					return (
-						<div className="header" key={`coin-${index}`}>
-							<div className="coin">{coin.value}</div>
-							<div className="price">{coin.currentPrice}</div>
-							<div className="total">{(coin.currentPrice * coin.amount)}</div>
-							<div className={"profit" + this.checkPositive(parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2))}>{parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2)}</div>
-							<div className={"change" + this.checkPositive(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</div>
-						</div>
-					)
-				})}
-
+				<Paper>
+			    	<Table>
+				        <TableHead>
+					        <TableRow>
+					            <TableCell>Coin</TableCell>
+					            <TableCell numeric>Current Price</TableCell>
+					            <TableCell numeric>Total Value</TableCell>
+					            <TableCell numeric>Profit/Loss</TableCell>
+					            <TableCell numeric>Change</TableCell>
+					        </TableRow>
+				        </TableHead>
+				        <TableBody>
+					        {coins && Object.keys(coins).map((key, index) => {
+								const coin = coins[key]
+					            return (
+					                <TableRow key={`coin-${index}`}>
+						                <TableCell className="coin">{coin.value}</TableCell>
+						                <TableCell className="price">{coin.currentPrice}</TableCell>
+						                <TableCell numeric className="total">{(coin.currentPrice * coin.amount)}</TableCell>
+						                <TableCell numeric className={"profit" + this.checkPositive(parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2))}>{parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2)}</TableCell>
+						                <TableCell numeric className={"change" + this.checkPositive(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
+					                </TableRow>
+					            );
+					        })}
+				        </TableBody>
+			      	</Table>
+			    </Paper>
 				<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
 			        <AddIcon />
 			    </Button>
