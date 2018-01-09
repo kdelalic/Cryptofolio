@@ -143,11 +143,11 @@ class AddCoin extends Component {
 	    super(props);
 	    
 	    this.state = {
-	    	value: '',
-	    	amount: '',
-	    	price: '',
+	    	value: 'Bitcoin (BTC)',
+	    	amount: 2,
+	    	price: 14000,
 			currency: 'usd',
-			priceType: 'total',
+			priceType: 'per',
 			date: formatDate(),
 			suggestions: [],
   		};

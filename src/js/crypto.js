@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import '../css/crypto.css';
+import Progress from './progress.js'
 import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add'
@@ -35,7 +36,7 @@ class Crypto extends Component {
 	        });		
 	};
 
-	checkPositive = (num) => {
+	checkPos = (num) => {
 		if (num > 0) {
 			return " positive"
 		} else if (num < 0) {
@@ -58,13 +59,14 @@ class Crypto extends Component {
 			...this.state.coins
 		};
 		newCoins[key] = dataFromChild
-		console.log("newCoins",newCoins);
         this.setState({
         	...this.state,
         	coins: newCoins
         }, () => {
-        	console.log("coins",this.state.coins);
         	this.getCurrentPrice(key);
+        	this.setState({
+				...this.state,
+			})
 	        this.handleClose();
         })
     };
@@ -73,6 +75,7 @@ class Crypto extends Component {
 		const { coins } = this.state;
 		return (
 			<div className="crypto">
+				<Progress coins={this.state.coins}/>
 				<Paper>
 			    	<Table>
 				        <TableHead>
@@ -84,16 +87,16 @@ class Crypto extends Component {
 					            <TableCell numeric>Change</TableCell>
 					        </TableRow>
 				        </TableHead>
-				        <TableBody>
+				        <TableBody children={TableRow}>
 					        {coins && Object.keys(coins).map((key, index) => {
 								const coin = coins[key]
 					            return (
 					                <TableRow key={`coin-${index}`}>
 						                <TableCell className="coin">{coin.value}</TableCell>
-						                <TableCell className="price">{coin.currentPrice}</TableCell>
-						                <TableCell numeric className="total">{(coin.currentPrice * coin.amount)}</TableCell>
-						                <TableCell numeric className={"profit" + this.checkPositive(parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2))}>{parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2)}</TableCell>
-						                <TableCell numeric className={"change" + this.checkPositive(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
+						                <TableCell numeric className="price">{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
+						                <TableCell numeric className="total">{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount)}</TableCell>
+						                <TableCell numeric className={"profit" + this.checkPos(parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2))}>{coin.currency.toUpperCase() + " " + parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2)}</TableCell>
+						                <TableCell numeric className={"change" + this.checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
 					                </TableRow>
 					            );
 					        })}
