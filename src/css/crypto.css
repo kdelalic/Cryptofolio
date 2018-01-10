@@ -8,23 +8,12 @@
 .crypto .header {
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
 	align-items: center;
-	position: relative;
-    left: 0;
-    right: 0;
-    margin-right: 20px;
 }
 
-.crypto .header > div {
-	border: 1px solid black;
-	text-align: center;
-	flex-grow: 1;
-	padding: 3px;
-	width: 150px;
-	height: 25px;
+.crypto .header .add {
+	margin-left: 20px;
 }
-
 .crypto .positive {
 	color: green;
 }

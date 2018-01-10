@@ -85,36 +85,38 @@ class Crypto extends Component {
 		return (
 			<div className="crypto">
 				<Progress coins={this.state.coins}/>
-				<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
-			        <AddIcon />
-			    </Button>
-				<Paper>
-			    	<Table>
-				        <TableHead children={TableRow}>
-					        <TableRow>
-					            <TableCell>Coin</TableCell>
-					            <TableCell numeric>Current Price</TableCell>
-					            <TableCell numeric>Total Value</TableCell>
-					            <TableCell numeric>Profit/Loss</TableCell>
-					            <TableCell numeric>Change</TableCell>
-					        </TableRow>
-				        </TableHead>
-				        <TableBody children={TableRow}>
-					        {coins && Object.keys(coins).map((key, index) => {
-								const coin = coins[key]
-					            return (
-					                <TableRow key={`coin-${index}`}>
-						                <TableCell className="coin">{coin.value}</TableCell>
-						                <TableCell numeric className="price">{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
-						                <TableCell numeric className="total">{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
-						                <TableCell numeric className={"profit" + this.checkPos(coin.profit)}>{coin.currency.toUpperCase() + " " + coin.profit}</TableCell>
-						                <TableCell numeric className={"change" + this.checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
-					                </TableRow>
-					            );
-					        })}
-				        </TableBody>
-			      	</Table>
-			    </Paper>
+				<div class="header">
+					<Paper>
+				    	<Table>
+					        <TableHead children={TableRow}>
+						        <TableRow>
+						            <TableCell>Coin</TableCell>
+						            <TableCell numeric>Current Price</TableCell>
+						            <TableCell numeric>Total Value</TableCell>
+						            <TableCell numeric>Profit/Loss</TableCell>
+						            <TableCell numeric>Change</TableCell>
+						        </TableRow>
+					        </TableHead>
+					        <TableBody children={TableRow}>
+						        {coins && Object.keys(coins).map((key, index) => {
+									const coin = coins[key]
+						            return (
+						                <TableRow key={`coin-${index}`}>
+							                <TableCell className="coin">{coin.value}</TableCell>
+							                <TableCell numeric className="price">{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
+							                <TableCell numeric className="total">{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
+							                <TableCell numeric className={"profit" + this.checkPos(coin.profit)}>{coin.currency.toUpperCase() + " " + coin.profit}</TableCell>
+							                <TableCell numeric className={"change" + this.checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
+						                </TableRow>
+						            );
+						        })}
+					        </TableBody>
+				      	</Table>
+				    </Paper>
+					<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
+				        <AddIcon />
+				    </Button>
+			    </div>
 				<Modal
 		          aria-labelledby="Add Coin"
 		          aria-describedby="Add a Coin"
