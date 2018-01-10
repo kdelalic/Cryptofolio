@@ -85,6 +85,9 @@ class Crypto extends Component {
 		return (
 			<div className="crypto">
 				<Progress coins={this.state.coins}/>
+				<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
+			        <AddIcon />
+			    </Button>
 				<Paper>
 			    	<Table>
 				        <TableHead children={TableRow}>
@@ -112,9 +115,6 @@ class Crypto extends Component {
 				        </TableBody>
 			      	</Table>
 			    </Paper>
-				<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
-			        <AddIcon />
-			    </Button>
 				<Modal
 		          aria-labelledby="Add Coin"
 		          aria-describedby="Add a Coin"

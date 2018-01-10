@@ -1,3 +1,22 @@
 .progress {
 	margin-bottom: 50px;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+    justify-content: center;
+    margin-top: 50px;
 }
+
+.progress .stat {
+	margin: 0 10px;
+}
+
+.progress .stat .content {
+	padding: 10px 20px;
+}
+
+.progress .stat h1, .progress .stat h2 {
+	font-weight: 300;
+	text-align: center;
+}
+
