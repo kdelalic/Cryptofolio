@@ -8,9 +8,11 @@
     "material-ui": "^1.0.0-beta.26",
     "material-ui-icons": "^1.0.0-beta.17",
     "react": "^16.2.0",
+    "react-autocomplete": "^1.7.2",
     "react-autosuggest": "^9.3.2",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.0.17",
+    "react-select": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

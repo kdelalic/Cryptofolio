@@ -85,7 +85,7 @@ class Crypto extends Component {
 		return (
 			<div className="crypto">
 				<Progress coins={this.state.coins}/>
-				<div class="header">
+				<div className="header">
 					<Paper>
 				    	<Table>
 					        <TableHead children={TableRow}>

@@ -8,11 +8,11 @@
 .crypto .header {
 	display: flex;
 	flex-direction: row;
-	align-items: center;
 }
 
 .crypto .header .add {
 	margin-left: 20px;
+	margin-top: 7px;
 }
 .crypto .positive {
 	color: green;

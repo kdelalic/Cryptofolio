@@ -143,9 +143,7 @@ class AddCoin extends Component {
 	    super(props);
 	    
 	    this.state = {
-	    	value: 'Bitcoin (BTC)',
-	    	amount: 2,
-	    	price: 14000,
+	    	value: '',
 			currency: 'usd',
 			priceType: 'per',
 			date: formatDate(),
@@ -215,7 +213,7 @@ class AddCoin extends Component {
 				    <TextField
 			          required
 			          id="required"
-			          type="number"
+			          type="float"
 			          label="Amount"
 			          className="amount"
 			          margin="normal"
@@ -226,7 +224,7 @@ class AddCoin extends Component {
 			        <TextField
 			          required
 			          id="required"
-			          type="number"
+			          type="float"
 			          label="Trade Price"
 			          className="tradePrice"
 			          margin="normal"
@@ -268,7 +266,7 @@ class AddCoin extends Component {
 				        }}
 				        onChange={this.handleInput('date')}
 				    />
-			        <Button type="submit" raised color="primary" className="addCoinButton">
+			        <Button raised type="submit" raised color="primary" className="addCoinButton">
 				        Add Coin
 				    </Button>
 			    </form>
