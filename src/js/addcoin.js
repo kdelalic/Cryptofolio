@@ -12,7 +12,7 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
-import coins from './coins.json'
+import coins from './coins.json';
 
 const suggestions = coins;
 

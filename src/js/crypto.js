@@ -26,10 +26,19 @@ class Crypto extends Component {
 		axios.get(url)
 			.then(response => {
 				const price = response.data[coins[key].currency.toUpperCase()];
-				
-				var newState = this.state;
-				newState.coins[key]["currentPrice"] = price;
-				this.setState(newState);
+				const profit = parseFloat(((price - coins[key].price) * coins[key].amount).toFixed(2))
+
+				this.setState({
+				  ...this.state,
+				  coins: {
+				    ...this.state.coins,
+				    [key]: {
+				      ...this.state.coins[key],
+				      currentPrice: price,
+				      profit: profit,
+				    },
+				  },
+				});
 			})
 			.catch(err => {               
 	        	console.log(err)
@@ -78,7 +87,7 @@ class Crypto extends Component {
 				<Progress coins={this.state.coins}/>
 				<Paper>
 			    	<Table>
-				        <TableHead>
+				        <TableHead children={TableRow}>
 					        <TableRow>
 					            <TableCell>Coin</TableCell>
 					            <TableCell numeric>Current Price</TableCell>
@@ -94,8 +103,8 @@ class Crypto extends Component {
 					                <TableRow key={`coin-${index}`}>
 						                <TableCell className="coin">{coin.value}</TableCell>
 						                <TableCell numeric className="price">{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
-						                <TableCell numeric className="total">{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount)}</TableCell>
-						                <TableCell numeric className={"profit" + this.checkPos(parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2))}>{coin.currency.toUpperCase() + " " + parseFloat((coin.currentPrice - coin.price) * coin.amount).toFixed(2)}</TableCell>
+						                <TableCell numeric className="total">{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
+						                <TableCell numeric className={"profit" + this.checkPos(coin.profit)}>{coin.currency.toUpperCase() + " " + coin.profit}</TableCell>
 						                <TableCell numeric className={"change" + this.checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
 					                </TableRow>
 					            );
