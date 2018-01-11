@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/progress.css';
 import Paper from 'material-ui/Paper';
+import { checkPos } from './helpers.js'
 
 function contains(obj, elem) {
 	for (var i in obj){
@@ -49,41 +50,31 @@ class Progress extends Component {
   		}
   	}
 
-  	checkPos = (num) => {
-		if (num > 0) {
-			return " positive"
-		} else if (num < 0) {
-			return " negative"
-		} else {
-			return ""
-		}
-	};
-
 	render() {
 		const currency = this.state.currency === undefined ? "" : this.state.currency.toUpperCase();
 		return (
 			<div className="progress">
 			    <Paper className="stat">
 				    <div className="content">
-				    	<h1 className={this.checkPos(this.state.initial)}>{currency + " " + this.state.initial.toFixed(2)}</h1>
+				    	<h1 className={checkPos(this.state.initial)}>{currency + " " + this.state.initial.toFixed(2)}</h1>
 				    	<h2>Initial Investment</h2>
 			    	</div>
 			    </Paper>
 			    <Paper className="stat">
 				    <div className="content">
-				    	<h1 className={this.checkPos(this.state.profit)}>{currency + " " + this.state.profit.toFixed(2)}</h1>
+				    	<h1 className={checkPos(this.state.profit)}>{currency + " " + this.state.profit.toFixed(2)}</h1>
 				    	<h2>Profit/Loss</h2>
 			    	</div>
 			    </Paper>
 			    <Paper className="stat">
 				    <div className="content">
-		                <h1 className={this.checkPos(this.state.holdings)}>{currency + " " + this.state.holdings.toFixed(2)}</h1>
+		                <h1 className={checkPos(this.state.holdings)}>{currency + " " + this.state.holdings.toFixed(2)}</h1>
 		                <h2>Total Holdings</h2>
 	                </div>
 	            </Paper>
 	            <Paper className="stat">
 	            	<div className="content">
-		                <h1 className={this.checkPos(this.state.change)}>{this.state.change.toFixed(2) + "%"}</h1>
+		                <h1 className={checkPos(this.state.change)}>{this.state.change.toFixed(2) + "%"}</h1>
 		                <h2>Change</h2>
 		            </div>
 			    </Paper>

@@ -21,3 +21,18 @@
 .crypto .negative {
 	color: red;
 }
+
+.crypto .cell {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.crypto .cell .coin {
+	font-size: 1.1em;
+	font-weight: 400;
+}
+
+.crypto .cell .date {
+	color: #999;
+}

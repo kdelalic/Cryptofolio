@@ -5,10 +5,10 @@ import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add'
 import AddCoin from './addcoin.js';
-import axios from 'axios'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-
+import {checkPos, toMonth} from './helpers.js'
+import socketIOClient from "socket.io-client";
 
 
 class Crypto extends Component {
@@ -17,43 +17,48 @@ class Crypto extends Component {
 
 	    this.state = {
 		    open: false,
+		    convertCurrency: 'USD',
+		    subscriptions: {},
+		    endpoint: "wss://streamer.cryptocompare.com",
 		};
   	}
 
-	getCurrentPrice = (key) => {
-		const { coins } = this.state;
-		var url = "https://min-api.cryptocompare.com/data/price?fsym=" + coins[key].value.substring(coins[key].value.indexOf("(")+1,coins[key].value.indexOf(")")).toUpperCase() + "&tsyms=" + coins[key].currency.toUpperCase();
-		axios.get(url)
-			.then(response => {
-				const price = response.data[coins[key].currency.toUpperCase()];
-				const profit = parseFloat(((price - coins[key].price) * coins[key].amount).toFixed(2))
+  	componentWillUpdate(nextProps, nextState) {
+  		if(nextState.subscriptions !== this.state.subscriptions){
+  			const { endpoint } = this.state;
+	    	const socket = socketIOClient(endpoint);
+	    	socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
+	    	socket.on("m", data => {
+	    		console.log(data)
+	    		Object.keys(nextState.subscriptions).map((key) => {
+	    			const response = data.split("~")
+	    			if(!isNaN(response[5])){ 
+		    			this.setState({
+		    				...this.state,
+		    				coins: {
+		    					...this.state.coins,
+		    					[key]: {
+		    						...this.state.coins[key],
+		    						currentPrice: parseFloat(response[5]),
+		    						profit: parseFloat(((parseFloat(response[5]) - this.state.coins[key].price) * this.state.coins[key].amount).toFixed(2))
+		    					}
+		    				}
+		    			}, () => {
+		    			})
+	    			}
+		 		})
+		    });
+  		}
+  	}
 
-				this.setState({
-				  ...this.state,
-				  coins: {
-				    ...this.state.coins,
-				    [key]: {
-				      ...this.state.coins[key],
-				      currentPrice: price,
-				      profit: profit,
-				    },
-				  },
-				});
-			})
-			.catch(err => {               
-	        	console.log(err)
-	        });		
-	};
-
-	checkPos = (num) => {
-		if (num > 0) {
-			return " positive"
-		} else if (num < 0) {
-			return " negative"
-		} else {
-			return ""
-		}
-	};
+  	componentDidMount() {
+	    // const { endpoint } = this.state;
+	    // const socket = socketIOClient(endpoint);
+	    // socket.emit('SubAdd', { subs: this.state.subscriptions } ); 
+	    // socket.on("m", data => {
+	      
+	    // });
+    }
 
 	handleOpen = () => {
 	  this.setState({ ...this.state, open: true });
@@ -64,18 +69,18 @@ class Crypto extends Component {
 	};
 
 	coinData = (dataFromChild, key) => {
-		const newCoins = {
-			...this.state.coins
-		};
-		newCoins[key] = dataFromChild
+		const addSub = "5~CCCAGG~" + dataFromChild.value.substring(dataFromChild.value.indexOf("(")+1,dataFromChild.value.indexOf(")")) + "~" + this.state.convertCurrency
         this.setState({
         	...this.state,
-        	coins: newCoins
+        	subscriptions: {
+        		...this.state.subscriptions, 
+        		[key]: addSub
+        	},
+        	coins: {
+        		...this.state.coins,
+        		[key]: dataFromChild
+        	},
         }, () => {
-        	this.getCurrentPrice(key);
-        	this.setState({
-				...this.state,
-			})
 	        this.handleClose();
         })
     };
@@ -84,6 +89,7 @@ class Crypto extends Component {
 		const { coins } = this.state;
 		return (
 			<div className="crypto">
+				<h1>UNDER DEVELOPMENT</h1>
 				<Progress coins={this.state.coins}/>
 				<div className="header">
 					<Paper>
@@ -102,11 +108,14 @@ class Crypto extends Component {
 									const coin = coins[key]
 						            return (
 						                <TableRow key={`coin-${index}`}>
-							                <TableCell className="coin">{coin.value}</TableCell>
-							                <TableCell numeric className="price">{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
-							                <TableCell numeric className="total">{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
-							                <TableCell numeric className={"profit" + this.checkPos(coin.profit)}>{coin.currency.toUpperCase() + " " + coin.profit}</TableCell>
-							                <TableCell numeric className={"change" + this.checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
+							                <TableCell className="cell">
+							                	<div className="coin">{coin.value}</div>
+							                	<div className="date">{"(" + toMonth(coin.date.substring(5, 7)) + " " + coin.date.substring(8, 10) + ", " + coin.date.substring(0, 4) + ")"}</div>
+							                </TableCell>
+							                <TableCell numeric>{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
+							                <TableCell numeric>{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
+							                <TableCell numeric className={checkPos(coin.profit)}>{coin.currency.toUpperCase() + " " + coin.profit}</TableCell>
+							                <TableCell numeric className={checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
 						                </TableRow>
 						            );
 						        })}

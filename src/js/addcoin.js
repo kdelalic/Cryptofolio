@@ -13,6 +13,9 @@ import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 import coins from './coins.json';
+import { LinearProgress } from 'material-ui/Progress';
+import axios from 'axios'
+import { formatDate } from './helpers.js'
 
 const suggestions = coins;
 
@@ -92,23 +95,6 @@ function getSuggestions(value) {
       });
 }
 
-function formatDate() {
-	var d = new Date();
-	var date = d.getFullYear() + "-"
-	if(d.getMonth() < 9){
-		date += "0" + (d.getMonth() + 1) + "-"
-	} else {
-		date += (d.getMonth() + 1) + "-"
-	}
-	if(d.getDate() < 9){
-		date += "0" + d.getDate()
-	} else {
-		date += (d.getDate() + 1)
-	}
-
-	return date
-}
-
 const styles = theme => ({
   container: {
     flexGrow: 1,
@@ -143,7 +129,9 @@ class AddCoin extends Component {
 	    super(props);
 	    
 	    this.state = {
-	    	value: '',
+	    	value: 'Bitcoin (BTC)',
+	    	amount: 2,
+	    	price: 14000,
 			currency: 'usd',
 			priceType: 'per',
 			date: formatDate(),
@@ -167,25 +155,51 @@ class AddCoin extends Component {
 		this.setState({
 		  value: newValue,
 		});
+		event.preventDefault()
 	};
 
 	handleInput = name => event => {
 	    this.setState({
 	      [name]: event.target.value,
 	    });
+  		event.preventDefault();
   	};
 
-  	handleSubmit = event => {
-  		this.props.coinData(this.state, this.state.value.substring((this.state.value).indexOf("(")+1,(this.state.value).indexOf(")")) + "-" + id);
-  		id++;
-  	};
+  	getCurrentPrice = event => {
+		var url = "https://min-api.cryptocompare.com/data/price?fsym=" + this.state.value.substring(this.state.value.indexOf("(")+1,this.state.value.indexOf(")")).toUpperCase() + "&tsyms=" + this.state.currency.toUpperCase();
+		this.setState({
+		  	...this.state,
+			loading: true
+		});
+		
+		axios.get(url)
+			.then(response => {
+				const price = response.data[this.state.currency.toUpperCase()];
+				const profit = parseFloat(((price - this.state.price) * this.state.amount).toFixed(2))
+
+				this.setState({
+				  	...this.state,
+					currentPrice: price,
+					profit: profit,
+					loading: false
+				}, () => {
+					this.props.coinData(this.state, this.state.value.substring((this.state.value).indexOf("(")+1,(this.state.value).indexOf(")")) + "-" + id);
+  					id++;
+				});
+			})
+			.catch(err => {               
+	        	console.log(err)
+	        });		
+  		event.preventDefault();
+	};
 
 	render() {
 		const { classes } = this.props;
 		return (
 			<div className="addcoin">
 				<div className="header"><h2>Add a Coin</h2></div>
-				<form autoComplete="off" onSubmit={this.handleSubmit}>
+				{this.state.loading && <LinearProgress />}
+				<form autoComplete="off" onSubmit={this.getCurrentPrice}>
 					<Autosuggest required id="required"
 				        theme={{
 				          container: classes.container,
@@ -202,7 +216,6 @@ class AddCoin extends Component {
 				        getSuggestionValue={getSuggestionValue}
 				        renderSuggestion={renderSuggestion}
 				        inputProps={{
-				          
 				          autoFocus: true,
 				          classes,
 				          placeholder: 'Type to search for a coin',
@@ -213,7 +226,8 @@ class AddCoin extends Component {
 				    <TextField
 			          required
 			          id="required"
-			          type="float"
+			          type="number" 
+			          step="0.00000001" 
 			          label="Amount"
 			          className="amount"
 			          margin="normal"
@@ -224,7 +238,8 @@ class AddCoin extends Component {
 			        <TextField
 			          required
 			          id="required"
-			          type="float"
+			          type="number" 
+			          step="0.00000001" 
 			          label="Trade Price"
 			          className="tradePrice"
 			          margin="normal"
@@ -266,7 +281,7 @@ class AddCoin extends Component {
 				        }}
 				        onChange={this.handleInput('date')}
 				    />
-			        <Button raised type="submit" raised color="primary" className="addCoinButton">
+			        <Button raised type="submit" color="primary" className="addCoinButton" disabled={this.state.loading}>
 				        Add Coin
 				    </Button>
 			    </form>
