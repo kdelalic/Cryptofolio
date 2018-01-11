@@ -29,36 +29,27 @@ class Crypto extends Component {
 	    	const socket = socketIOClient(endpoint);
 	    	socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
 	    	socket.on("m", data => {
-	    		console.log(data)
 	    		Object.keys(nextState.subscriptions).map((key) => {
 	    			const response = data.split("~")
-	    			if(!isNaN(response[5])){ 
+	    			const newPrice = parseFloat(response[5])
+	    			if(!isNaN(newPrice) && !((newPrice * 0.80) > this.state.coins[key].currentPrice)){
 		    			this.setState({
 		    				...this.state,
 		    				coins: {
 		    					...this.state.coins,
 		    					[key]: {
 		    						...this.state.coins[key],
-		    						currentPrice: parseFloat(response[5]),
-		    						profit: parseFloat(((parseFloat(response[5]) - this.state.coins[key].price) * this.state.coins[key].amount).toFixed(2))
+		    						currentPrice: newPrice,
+		    						profit: parseFloat(((newPrice - this.state.coins[key].price) * this.state.coins[key].amount).toFixed(2))
 		    					}
 		    				}
-		    			}, () => {
 		    			})
 	    			}
+	    			return true
 		 		})
 		    });
   		}
   	}
-
-  	componentDidMount() {
-	    // const { endpoint } = this.state;
-	    // const socket = socketIOClient(endpoint);
-	    // socket.emit('SubAdd', { subs: this.state.subscriptions } ); 
-	    // socket.on("m", data => {
-	      
-	    // });
-    }
 
 	handleOpen = () => {
 	  this.setState({ ...this.state, open: true });

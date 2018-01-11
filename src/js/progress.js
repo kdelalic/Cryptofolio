@@ -26,26 +26,34 @@ class Progress extends Component {
 
   	componentWillReceiveProps(nextProps) {
   		if (nextProps.coins !== this.props.coins) {
-  			Object.keys(nextProps.coins).map((key) => {
-  				const coin = nextProps.coins[key]
+  			this.setState({
+  				initial: 0,
+			    profit: 0,
+			    holdings: 0,
+			    change: 0,
+			    addedCoins: []
+  			}, () => {
+  				Object.keys(nextProps.coins).map((key) => {
+	  				const coin = nextProps.coins[key]
 
-  				if(!contains(this.state.addedCoins, key) && coin.profit !== undefined){
-  					const { addedCoins } = this.state
-  					addedCoins.push(key)
-	  				const profit = this.state.profit + coin.profit
-	  				const initial = this.state.initial + coin.price * coin.amount
-	  				const holdings = initial + profit
-	  				const change = profit / initial  * 100
-				
-  					this.setState({
-	  					initial: initial,
-	  					profit: profit,
-	  					holdings: holdings,
-	  					change: change,
-	  					currency: coin.currency,
-	  				})
-	  			}
-	  			return true
+	  				if(!contains(this.state.addedCoins, key) && coin.profit !== undefined){
+	  					const { addedCoins } = this.state
+	  					addedCoins.push(key)
+		  				const profit = this.state.profit + coin.profit
+		  				const initial = this.state.initial + coin.price * coin.amount
+		  				const holdings = initial + profit
+		  				const change = profit / initial  * 100
+					
+	  					this.setState({
+		  					initial: initial,
+		  					profit: profit,
+		  					holdings: holdings,
+		  					change: change,
+		  					currency: coin.currency,
+		  				})
+		  			}
+		  			return true
+  				})
   			})
   		}
   	}
