@@ -43,7 +43,6 @@ class Progress extends Component {
 		  				const initial = this.state.initial + coin.price * coin.amount
 		  				const holdings = initial + profit
 		  				const change = profit / initial  * 100
-					
 	  					this.setState({
 		  					initial: initial,
 		  					profit: profit,
@@ -52,7 +51,6 @@ class Progress extends Component {
 		  					currency: coin.currency,
 		  				})
 		  			}
-		  			return true
   				})
   			})
   		}

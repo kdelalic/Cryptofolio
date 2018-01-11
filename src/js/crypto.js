@@ -32,7 +32,8 @@ class Crypto extends Component {
 	    		Object.keys(nextState.subscriptions).map((key) => {
 	    			const response = data.split("~")
 	    			const newPrice = parseFloat(response[5])
-	    			if(!isNaN(newPrice) && !((newPrice * 0.80) > this.state.coins[key].currentPrice)){
+	    			const symbol = this.state.coins[key].value.substring(this.state.coins[key].value.indexOf("(")+1,this.state.coins[key].value.indexOf(")")).toUpperCase()
+	    			if(!isNaN(newPrice) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.1) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.9) && response[2] === symbol){
 		    			this.setState({
 		    				...this.state,
 		    				coins: {
