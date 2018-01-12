@@ -1,21 +1,29 @@
 .progress {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+}
+
+.cards {
 	margin-bottom: 50px;
 	display: flex;
 	flex-direction: row;
 	width: 100%;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
-.progress .stat {
+.cards .stat {
 	margin: 0 10px;
 }
 
-.progress .stat .content {
+.cards .stat .content {
 	padding: 10px 20px;
 }
 
-.progress .stat h1, .progress .stat h2 {
+.cards .stat h1, .progress .stat h2 {
 	font-weight: 300;
 	text-align: center;
 }

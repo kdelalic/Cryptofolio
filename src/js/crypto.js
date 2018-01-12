@@ -9,6 +9,11 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 import Paper from 'material-ui/Paper';
 import {checkPos, toMonth} from './helpers.js'
 import socketIOClient from "socket.io-client";
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
 
 
 class Crypto extends Component {
@@ -27,13 +32,15 @@ class Crypto extends Component {
   		if(nextState.subscriptions !== this.state.subscriptions){
   			const { endpoint } = this.state;
 	    	const socket = socketIOClient(endpoint);
-	    	socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
+	    	console.log(this.state.subscriptions)
+  			socket.emit('SubRemove', { subs: this.state.subscriptions }, (data) => {
+  				socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
 	    	socket.on("m", data => {
 	    		Object.keys(nextState.subscriptions).map((key) => {
 	    			const response = data.split("~")
 	    			const newPrice = parseFloat(response[5])
 	    			const symbol = this.state.coins[key].value.substring(this.state.coins[key].value.indexOf("(")+1,this.state.coins[key].value.indexOf(")")).toUpperCase()
-	    			if(!isNaN(newPrice) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.1) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.9) && response[2] === symbol){
+	    			if(!isNaN(newPrice) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.2) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.8) && response[2] === symbol){
 		    			this.setState({
 		    				...this.state,
 		    				coins: {
@@ -49,6 +56,8 @@ class Crypto extends Component {
 	    			return true
 		 		})
 		    });
+  			} ); 
+	    	
   		}
   	}
 
@@ -77,12 +86,44 @@ class Crypto extends Component {
         })
     };
 
+    updateCurrency = (dataFromChild) => {
+    	this.setState({
+    		...this.state,
+    		convertCurrency: dataFromChild
+    	}, () => {
+    		const newSub = {}
+	    	for (var key in this.state.subscriptions) {
+	    		const splitSub = this.state.subscriptions[key].split("~")
+	    		newSub[key] = splitSub[0] + "~" + splitSub[1] + "~" + splitSub[2] + "~" + dataFromChild
+	    	}
+	    	this.setState({
+	    		...this.state,
+	    		subscriptions: newSub
+	    	}, () => {
+	    	})
+    	})
+    	
+    }
+
 	render() {
 		const { coins } = this.state;
 		return (
 			<div className="crypto">
-				<h1>UNDER DEVELOPMENT</h1>
-				<Progress coins={this.state.coins}/>
+				<AppBar position="static">
+			        <Toolbar>
+			          <IconButton color="contrast" aria-label="Menu">
+			            <MenuIcon />
+			          </IconButton>
+			          <Typography type="title" color="inherit">
+			            Cryptofolio
+			          </Typography>
+			          <Typography type="title" color="inherit" className="middleTitle">
+			            UNDER DEVELOPMENT
+			          </Typography>
+			          <Button color="contrast" className="loginButton">Login</Button>
+			        </Toolbar>
+			    </AppBar>
+				<Progress coins={this.state.coins} updateCurrency={this.updateCurrency}/>
 				<div className="header">
 					<Paper>
 				    	<Table>
@@ -101,13 +142,16 @@ class Crypto extends Component {
 						            return (
 						                <TableRow key={`coin-${index}`}>
 							                <TableCell className="cell">
-							                	<div className="coin">{coin.value}</div>
-							                	<div className="date">{"(" + toMonth(coin.date.substring(5, 7)) + " " + coin.date.substring(8, 10) + ", " + coin.date.substring(0, 4) + ")"}</div>
+							                	<div className="main">{coin.value}</div>
+							                	<div className="subMain">{"(" + toMonth(coin.date.substring(5, 7)) + " " + coin.date.substring(8, 10) + ", " + coin.date.substring(0, 4) + ")"}</div>
 							                </TableCell>
-							                <TableCell numeric>{coin.currency.toUpperCase() + " " + coin.currentPrice}</TableCell>
-							                <TableCell numeric>{coin.currency.toUpperCase() + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
-							                <TableCell numeric className={checkPos(coin.profit)}>{coin.currency.toUpperCase() + " " + coin.profit}</TableCell>
-							                <TableCell numeric className={checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
+							                <TableCell className="cell">
+							                	<div className="main">{this.state.convertCurrency + " " + coin.currentPrice}</div>
+							                	<div className="subMain">{coin.amount + " @ " + coin.currency.toUpperCase() + " " + coin.price}</div>
+							                </TableCell>
+							                <TableCell numeric className="main">{this.state.convertCurrency + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>
+							                <TableCell numeric className={"main" + checkPos(coin.profit)}>{this.state.convertCurrency + " " + coin.profit}</TableCell>
+							                <TableCell numeric className={"main" + checkPos(((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2))}>{((parseFloat((coin.currentPrice - coin.price) * coin.amount) / (coin.amount * coin.price)) * 100).toFixed(2) + "%"}</TableCell>
 						                </TableRow>
 						            );
 						        })}

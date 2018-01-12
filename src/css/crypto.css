@@ -23,16 +23,25 @@
 }
 
 .crypto .cell {
-	display: flex;
-	flex-direction: column;
 	text-align: center;
 }
 
-.crypto .cell .coin {
+.crypto .main {
 	font-size: 1.1em;
 	font-weight: 400;
 }
 
-.crypto .cell .date {
+.crypto .subMain {
 	color: #999;
+}
+
+.middleTitle {
+	position: absolute;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.loginButton {
+	position: absolute!important;
+	right: 24px;
 }
