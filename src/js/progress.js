@@ -30,6 +30,12 @@ class Progress extends Component {
   	}
 
   	componentWillReceiveProps(nextProps) {
+  		if (nextProps.convertCurrency !== this.props.convertCurrency) {
+  			this.setState({
+  				...this.state, 
+  				convertCurrency: nextProps.convertCurrency
+  			})
+  		}
   		if (nextProps.coins !== this.props.coins) {
   			this.setState({
   				...this.state,
@@ -62,30 +68,12 @@ class Progress extends Component {
   		}
   	}
 
-	handleChange = event => {
-		this.setState({
-			...this.state,
-			convertCurrency: event.target.value
-		}, () => {
-			this.props.updateCurrency(event.target.value)
-		});
-	}
+	
 
 	render() {
 		const currency = this.state.convertCurrency === undefined ? "" : this.state.convertCurrency.toUpperCase();
 		return (
 			<div className="progress">
-		        <FormControl>
-					<InputLabel htmlFor="convertCurrency">Currency</InputLabel>
-					<Select
-					value={this.state.convertCurrency}
-					onChange={this.handleChange}
-					input={<Input name="convertCurrency" id="convertCurrency" />}
-					>
-						<MenuItem value={"USD"}>USD</MenuItem>
-						<MenuItem value={"CAD"}>CAD</MenuItem>
-					</Select>
-		        </FormControl>
 		        <div className="cards">
 				    <Paper className="stat">
 					    <div className="content">

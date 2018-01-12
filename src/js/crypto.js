@@ -14,6 +14,10 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl } from 'material-ui/Form';
+import Select from 'material-ui/Select';
 
 
 class Crypto extends Component {
@@ -33,10 +37,11 @@ class Crypto extends Component {
   			const { endpoint } = this.state;
 	    	const socket = socketIOClient(endpoint);
 	    	console.log(this.state.subscriptions)
-  			socket.emit('SubRemove', { subs: this.state.subscriptions }, (data) => {
-  				socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
+  			socket.emit('SubRemove', { subs: this.state.subscriptions }); 
+  			socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
 	    	socket.on("m", data => {
 	    		Object.keys(nextState.subscriptions).map((key) => {
+	    			console.log(data)
 	    			const response = data.split("~")
 	    			const newPrice = parseFloat(response[5])
 	    			const symbol = this.state.coins[key].value.substring(this.state.coins[key].value.indexOf("(")+1,this.state.coins[key].value.indexOf(")")).toUpperCase()
@@ -55,9 +60,7 @@ class Crypto extends Component {
 	    			}
 	    			return true
 		 		})
-		    });
-  			} ); 
-	    	
+		    });	    	
   		}
   	}
 
@@ -86,24 +89,22 @@ class Crypto extends Component {
         })
     };
 
-    updateCurrency = (dataFromChild) => {
-    	this.setState({
+    handleChange = event => {
+		this.setState({
     		...this.state,
-    		convertCurrency: dataFromChild
+    		convertCurrency: event.target.value
     	}, () => {
     		const newSub = {}
 	    	for (var key in this.state.subscriptions) {
 	    		const splitSub = this.state.subscriptions[key].split("~")
-	    		newSub[key] = splitSub[0] + "~" + splitSub[1] + "~" + splitSub[2] + "~" + dataFromChild
+	    		newSub[key] = splitSub[0] + "~" + splitSub[1] + "~" + splitSub[2] + "~" + event.target.value
 	    	}
 	    	this.setState({
 	    		...this.state,
 	    		subscriptions: newSub
-	    	}, () => {
 	    	})
     	})
-    	
-    }
+	}
 
 	render() {
 		const { coins } = this.state;
@@ -120,12 +121,25 @@ class Crypto extends Component {
 			          <Typography type="title" color="inherit" className="middleTitle">
 			            UNDER DEVELOPMENT
 			          </Typography>
-			          <Button color="contrast" className="loginButton">Login</Button>
+			          <div className="rightSettings">
+				          <FormControl className="currencySelect">
+								<InputLabel htmlFor="convertCurrency">Currency</InputLabel>
+								<Select
+								value={this.state.convertCurrency}
+								onChange={this.handleChange}
+								input={<Input name="convertCurrency" id="convertCurrency" />}
+								>
+									<MenuItem value={"USD"}>USD</MenuItem>
+									<MenuItem value={"CAD"}>CAD</MenuItem>
+								</Select>
+					      </FormControl>
+				          <Button color="contrast">Login</Button>
+			          </div>
 			        </Toolbar>
 			    </AppBar>
-				<Progress coins={this.state.coins} updateCurrency={this.updateCurrency}/>
+				<Progress coins={this.state.coins} convertCurrency={this.state.convertCurrency}/>
 				<div className="header">
-					<Paper>
+					<Paper className="table">
 				    	<Table>
 					        <TableHead children={TableRow}>
 						        <TableRow>

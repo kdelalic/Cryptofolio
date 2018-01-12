@@ -10,6 +10,10 @@
 	flex-direction: row;
 }
 
+.crypto .table {
+	/*width: 830px;*/
+}
+
 .crypto .header .add {
 	margin-left: 20px;
 	margin-top: 7px;
@@ -41,7 +45,27 @@
     transform: translateX(50%);
 }
 
-.loginButton {
+.rightSettings {
 	position: absolute!important;
 	right: 24px;
+}
+
+.currencySelect *{
+	color: white;
+}
+
+.MuiInput-underline-111:before {
+	background: white !important;
+}
+
+.MuiFormLabel-root-96 {
+	color: white!important;
+}
+
+.MuiFormLabel-focused-97 {
+	color: #9FA8DA!important;
+}
+
+.MuiInput-inkbar-107:after {
+	background-color: #9FA8DA!important;
 }
