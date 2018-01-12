@@ -54,6 +54,7 @@ class Progress extends Component {
 		  					profit: profit,
 		  					holdings: holdings,
 		  					change: change,
+		  					addedCoins: addedCoins
 		  				})
 		  			}
   				})
