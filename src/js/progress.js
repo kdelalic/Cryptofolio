@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import '../css/progress.css';
 import Paper from 'material-ui/Paper';
 import { checkPos } from './helpers.js'
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl } from 'material-ui/Form';
-import Select from 'material-ui/Select';
 
 function contains(obj, elem) {
 	for (var i in obj){
