@@ -17,16 +17,30 @@
 	top: 0;
 	background: #e74c3c;
     border-radius: 5px 5px 0 0;
+    position: relative;
 }
 
 .addcoin .header h2 {
 	margin: 0;
-	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
 	color: white;
 	margin-left: 20px;
 	font-size: 20px;
+	position: absolute;
+    left: 0;
+}
+
+.header .closeButton {
+	position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  	margin-right: 5px;
+}
+
+.header .closeButton > span > span {
+	color: white!important;
 }
 
 .addcoin form {

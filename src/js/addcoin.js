@@ -12,6 +12,8 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
+import IconButton from 'material-ui/IconButton';
 import coins from './coins.json';
 import { LinearProgress } from 'material-ui/Progress';
 import axios from 'axios'
@@ -167,11 +169,19 @@ class AddCoin extends Component {
 
   	getCurrentPrice = event => {
 		var url = "https://min-api.cryptocompare.com/data/price?fsym=" + this.state.value.substring(this.state.value.indexOf("(")+1,this.state.value.indexOf(")")).toUpperCase() + "&tsyms=" + this.state.currency.toUpperCase();
-		this.setState({
-		  	...this.state,
-			loading: true
-		});
-		
+		if (this.state.priceType === "total"){
+			const price = this.state.price / this.state.amount
+			this.setState({
+			  	...this.state,
+			  	price: price,
+				loading: true
+			});
+		} else {
+			this.setState({
+			  	...this.state,
+				loading: true
+			});
+		}
 		axios.get(url)
 			.then(response => {
 				const price = response.data[this.state.currency.toUpperCase()];
@@ -189,7 +199,7 @@ class AddCoin extends Component {
 			})
 			.catch(err => {               
 	        	console.log(err)
-	        });		
+	        });
   		event.preventDefault();
 	};
 
@@ -197,7 +207,12 @@ class AddCoin extends Component {
 		const { classes } = this.props;
 		return (
 			<div className="addcoin">
-				<div className="header"><h2>Add a Coin</h2></div>
+				<div className="header">
+					<h2>Add a Coin</h2>
+					<IconButton className="closeButton" onClick={this.props.handleClose}>
+						<Icon>close</Icon>
+					</IconButton>
+				</div>
 				{this.state.loading && <LinearProgress />}
 				<form autoComplete="off" onSubmit={this.getCurrentPrice}>
 					<Autosuggest required id="required"

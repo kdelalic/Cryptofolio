@@ -182,7 +182,7 @@ class Crypto extends Component {
 		          open={this.state.open}
 		          onClose={this.handleClose}
 		        >
-		        	<AddCoin coinData={this.coinData}/>
+		        	<AddCoin coinData={this.coinData} handleClose={this.handleClose} />
 		        </Modal>
 			</div>
 		);
