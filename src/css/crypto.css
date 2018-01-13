@@ -54,18 +54,18 @@
 	color: white!important;
 }
 
-.MuiInput-underline-111:before, .jss111:before {
+.currencySelect .MuiInput-underline-111:before, .jss111:before {
 	background: white !important;
 }
 
-.MuiFormLabel-root-96, .jss96 {
+.currencySelect .MuiFormLabel-root-96, .jss96 {
 	color: white!important;
 }
 
-.MuiFormLabel-focused-97, .jss97 {
+.currencySelect .MuiFormLabel-focused-97, .jss97 {
 	color: #9FA8DA!important;
 }
 
-.MuiInput-inkbar-107:after, .jss107:after {
+.currencySelect.MuiInput-inkbar-107:after, .jss107:after {
 	background-color: #9FA8DA!important;
 }

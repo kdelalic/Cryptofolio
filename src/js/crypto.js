@@ -18,7 +18,10 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
+import { formatDate } from './helpers.js'
 
+const endpoint = "wss://streamer.cryptocompare.com";
+const socket = socketIOClient(endpoint);
 
 class Crypto extends Component {
 	constructor(props) {
@@ -28,24 +31,22 @@ class Crypto extends Component {
 		    open: false,
 		    convertCurrency: 'USD',
 		    subscriptions: {},
-		    endpoint: "wss://streamer.cryptocompare.com",
 		};
   	}
 
   	componentWillUpdate(nextProps, nextState) {
   		if(nextState.subscriptions !== this.state.subscriptions){
-  			const { endpoint } = this.state;
-	    	const socket = socketIOClient(endpoint);
-	    	console.log(this.state.subscriptions)
-  			socket.emit('SubRemove', { subs: this.state.subscriptions }); 
+			socket.emit('SubRemove', { subs: this.state.subscriptions } ); 
   			socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
+
 	    	socket.on("m", data => {
-	    		Object.keys(nextState.subscriptions).map((key) => {
-	    			console.log(data)
+	    		console.log(data)
+
+	    		for(var key in nextState.subscriptions) {
 	    			const response = data.split("~")
 	    			const newPrice = parseFloat(response[5])
 	    			const symbol = this.state.coins[key].value.substring(this.state.coins[key].value.indexOf("(")+1,this.state.coins[key].value.indexOf(")")).toUpperCase()
-	    			if(!isNaN(newPrice) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.2) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.8) && response[2] === symbol){
+	    			if(!isNaN(newPrice) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.25) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.75) && response[2] === symbol){
 		    			this.setState({
 		    				...this.state,
 		    				coins: {
@@ -58,8 +59,7 @@ class Crypto extends Component {
 		    				}
 		    			})
 	    			}
-	    			return true
-		 		})
+		 		}
 		    });	    	
   		}
   	}
@@ -119,7 +119,7 @@ class Crypto extends Component {
 			            Cryptofolio
 			          </Typography>
 			          <Typography type="title" color="inherit" className="middleTitle">
-			            UNDER DEVELOPMENT
+			            UNDER DEVELOPMENT ({formatDate()})
 			          </Typography>
 			          <div className="rightSettings">
 				          <FormControl className="currencySelect">
@@ -160,7 +160,7 @@ class Crypto extends Component {
 							                	<div className="subMain">{"(" + toMonth(coin.date.substring(5, 7)) + " " + coin.date.substring(8, 10) + ", " + coin.date.substring(0, 4) + ")"}</div>
 							                </TableCell>
 							                <TableCell className="cell">
-							                	<div className="main">{this.state.convertCurrency + " " + coin.currentPrice}</div>
+							                	<div className="main">{this.state.convertCurrency + " " + coin.currentPrice.toFixed(2)}</div>
 							                	<div className="subMain">{coin.amount + " @ " + coin.currency.toUpperCase() + " " + coin.price}</div>
 							                </TableCell>
 							                <TableCell numeric className="main">{this.state.convertCurrency + " " + (coin.currentPrice * coin.amount).toFixed(2)}</TableCell>

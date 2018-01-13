@@ -41,7 +41,7 @@ class Progress extends Component {
 			    change: 0,
 			    addedCoins: []
   			}, () => {
-  				Object.keys(nextProps.coins).map((key) => {
+  				for (var key in nextProps.coins){
 	  				const coin = nextProps.coins[key]
 	  				if(!contains(this.state.addedCoins, key) && coin.profit !== undefined){
 	  					const { addedCoins } = this.state
@@ -59,7 +59,7 @@ class Progress extends Component {
 		  					addedCoins: addedCoins
 		  				})
 		  			}
-  				})
+  				}
   			})
   		}
   	}
