@@ -36,17 +36,16 @@ class Crypto extends Component {
 
   	componentWillUpdate(nextProps, nextState) {
   		if(nextState.subscriptions !== this.state.subscriptions){
-			socket.emit('SubRemove', { subs: this.state.subscriptions } ); 
-  			socket.emit('SubAdd', { subs: nextState.subscriptions } ); 
+  			
 
 	    	socket.on("m", data => {
-	    		console.log(data)
+	    		// console.log(data)
 
 	    		for(var key in nextState.subscriptions) {
 	    			const response = data.split("~")
 	    			const newPrice = parseFloat(response[5])
 	    			const symbol = this.state.coins[key].value.substring(this.state.coins[key].value.indexOf("(")+1,this.state.coins[key].value.indexOf(")")).toUpperCase()
-	    			if(!isNaN(newPrice) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.25) && !(Math.abs(newPrice - this.state.coins[key].currentPrice) > newPrice * 0.75) && response[2] === symbol){
+	    			if(!isNaN(newPrice) && (newPrice > (this.state.coins[key].currentPrice * 0.5) && (newPrice < this.state.coins[key].currentPrice * 1.5)) && response[2] === symbol){
 		    			this.setState({
 		    				...this.state,
 		    				coins: {
@@ -85,11 +84,13 @@ class Crypto extends Component {
         		[key]: dataFromChild
         	},
         }, () => {
+        	socket.emit('SubAdd', { subs: this.state.subscriptions } ); 
 	        this.handleClose();
         })
     };
 
     handleChange = event => {
+    	socket.emit('SubRemove', { subs: this.state.subscriptions } ); 
 		this.setState({
     		...this.state,
     		convertCurrency: event.target.value
@@ -102,6 +103,8 @@ class Crypto extends Component {
 	    	this.setState({
 	    		...this.state,
 	    		subscriptions: newSub
+	    	}, () => {
+	    		socket.emit('SubAdd', { subs: this.state.subscriptions } ); 
 	    	})
     	})
 	}

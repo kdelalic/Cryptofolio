@@ -3,13 +3,6 @@ import '../css/progress.css';
 import Paper from 'material-ui/Paper';
 import { checkPos } from './helpers.js'
 
-function contains(obj, elem) {
-	for (var i in obj){
-		if (obj[i] === elem) return true;
-	}
-	return false;
-}
-
 class Progress extends Component {
 
 	constructor(props) {
@@ -21,7 +14,6 @@ class Progress extends Component {
 		    profit: 0,
 		    holdings: 0,
 		    change: 0,
-		    addedCoins: []
 		};
   	}
 
@@ -33,34 +25,26 @@ class Progress extends Component {
   			})
   		}
   		if (nextProps.coins !== this.props.coins) {
-  			this.setState({
-  				...this.state,
-  				initial: 0,
-			    profit: 0,
-			    holdings: 0,
-			    change: 0,
-			    addedCoins: []
-  			}, () => {
-  				for (var key in nextProps.coins){
-	  				const coin = nextProps.coins[key]
-	  				if(!contains(this.state.addedCoins, key) && coin.profit !== undefined){
-	  					const { addedCoins } = this.state
-	  					addedCoins.push(key)
-		  				const profit = this.state.profit + coin.profit
-		  				const initial = this.state.initial + coin.price * coin.amount
-		  				const holdings = initial + profit
-		  				const change = profit / initial  * 100
-	  					this.setState({
-	  						...this.state,
-		  					initial: initial,
-		  					profit: profit,
-		  					holdings: holdings,
-		  					change: change,
-		  					addedCoins: addedCoins
-		  				})
-		  			}
-  				}
-  			})
+			var profit = 0
+			var initial = 0
+			var holdings = 0
+			var change = 0
+			for (var key in nextProps.coins){
+  				const coin = nextProps.coins[key]
+  				if(coin.profit !== undefined){
+	  				profit = profit + coin.profit
+	  				initial = initial + coin.price * coin.amount
+	  				holdings = initial + profit
+	  				change = profit / initial  * 100
+	  			}
+			}
+			this.setState({
+				...this.state,
+				initial: initial,
+				profit: profit,
+				holdings: holdings,
+				change: change,
+			})
   		}
   	}
 
