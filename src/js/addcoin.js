@@ -213,7 +213,7 @@ class AddCoin extends Component {
 						<Icon>close</Icon>
 					</IconButton>
 				</div>
-				{this.state.loading && <LinearProgress />}
+				{this.state.loading && <LinearProgress color="accent"/>}
 				<form autoComplete="off" onSubmit={this.getCurrentPrice}>
 					<Autosuggest required id="required"
 				        theme={{

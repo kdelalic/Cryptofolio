@@ -19,6 +19,7 @@ import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import { formatDate } from './helpers.js'
+import Logo from '../img/logo.png'
 
 const endpoint = "wss://streamer.cryptocompare.com";
 const socket = socketIOClient(endpoint);
@@ -118,9 +119,7 @@ class Crypto extends Component {
 			          <IconButton color="contrast" aria-label="Menu">
 			            <MenuIcon />
 			          </IconButton>
-			          <Typography type="title" color="inherit">
-			            Cryptofolio
-			          </Typography>
+			          <a href="/" className="logo"><img src={Logo}/></a>
 			          <Typography type="title" color="inherit" className="middleTitle">
 			            UNDER DEVELOPMENT ({formatDate()})
 			          </Typography>

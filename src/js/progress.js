@@ -48,8 +48,6 @@ class Progress extends Component {
   		}
   	}
 
-	
-
 	render() {
 		const currency = this.state.convertCurrency === undefined ? "" : this.state.convertCurrency.toUpperCase();
 		return (

@@ -57,3 +57,12 @@
 .rightSettings .currencySelect {
 	margin-right: 20px;
 }
+
+.logo {
+	line-height: 0;
+	margin-left: 10px
+}
+
+.logo img {
+	height: 50px;
+}
