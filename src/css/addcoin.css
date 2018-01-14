@@ -15,7 +15,7 @@
 	height: 12.5%;
 	width: 100%;
 	top: 0;
-	background: #e74c3c;
+	background:  #FF9800;
     border-radius: 5px 5px 0 0;
     position: relative;
 }
@@ -79,4 +79,5 @@
 
 .addcoin .addCoinButton {
 	align-self: flex-end;
+	background-color: #FFA726;
 }

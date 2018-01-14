@@ -241,8 +241,6 @@ class AddCoin extends Component {
 				    <TextField
 			          required
 			          id="required"
-			          type="number" 
-			          step="0.00000001" 
 			          label="Amount"
 			          className="amount"
 			          margin="normal"
@@ -253,8 +251,6 @@ class AddCoin extends Component {
 			        <TextField
 			          required
 			          id="required"
-			          type="number" 
-			          step="0.00000001" 
 			          label="Trade Price"
 			          className="tradePrice"
 			          margin="normal"

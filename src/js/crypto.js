@@ -110,7 +110,7 @@ class Crypto extends Component {
 		const { coins } = this.state;
 		return (
 			<div className="crypto">
-				<AppBar position="static">
+				<AppBar position="static" style={{backgroundColor: "#FF9800"}}>
 			        <Toolbar>
 			          <IconButton color="contrast" aria-label="Menu">
 			            <MenuIcon />
@@ -172,7 +172,7 @@ class Crypto extends Component {
 					        </TableBody>
 				      	</Table>
 				    </Paper>
-					<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
+					<Button fab mini color="primary" aria-label="add" style={{backgroundColor: "#FF9800"}} onClick={this.handleOpen} className="add">
 				        <AddIcon />
 				    </Button>
 			    </div>
