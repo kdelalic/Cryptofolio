@@ -8,11 +8,18 @@
 .crypto .header {
 	display: flex;
 	flex-direction: row;
+	position: relative;
+}
+
+.header > div {
+	width: 100%
 }
 
 .crypto .header .add {
 	margin-left: 20px;
 	margin-top: 7px;
+	position: absolute;
+    right: -50px;
 }
 .crypto .positive {
 	color: green;
@@ -22,8 +29,8 @@
 	color: red;
 }
 
-.crypto .cell {
-	text-align: center;
+.currentPrice {
+	text-align: right!important;
 }
 
 .crypto .main {

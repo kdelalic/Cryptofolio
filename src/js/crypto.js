@@ -153,7 +153,7 @@ class Crypto extends Component {
 					</Toolbar>
 				</AppBar>
 				<Progress coins={this.state.coins} convertCurrency={this.state.convertCurrency} />
-				<div className="header">
+				<div className="header container">
 					<Paper className="table">
 						<Table>
 							<TableHead children={TableRow}>
@@ -170,11 +170,11 @@ class Crypto extends Component {
 									const coin = coins[key]
 									return (
 										<TableRow key={`coin-${index}`}>
-											<TableCell className="cell">
+											<TableCell>
 												<div className="main">{coin.value}</div>
 												<div className="subMain">{"(" + toMonth(coin.date.substring(5, 7)) + " " + coin.date.substring(8, 10) + ", " + coin.date.substring(0, 4) + ")"}</div>
 											</TableCell>
-											<TableCell className="cell">
+											<TableCell className="currentPrice">
 												<div className="main">{this.state.convertCurrency + " " + coin.currentPrice.toFixed(2)}</div>
 												<div className="subMain">{coin.amount + " @ " + coin.currency.toUpperCase() + " " + coin.price}</div>
 											</TableCell>

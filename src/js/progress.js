@@ -51,7 +51,7 @@ class Progress extends Component {
 	render() {
 		const currency = this.state.convertCurrency === undefined ? "" : this.state.convertCurrency.toUpperCase();
 		return (
-			<div className="progress">
+			<div className="progress container">
 				<div className="cards">
 					<Paper className="stat">
 						<div className="content">
