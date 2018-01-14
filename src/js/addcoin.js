@@ -22,105 +22,105 @@ import { formatDate } from './helpers.js'
 const suggestions = coins;
 
 function renderInput(inputProps) {
-  const { classes, autoFocus, value, ref, ...other } = inputProps;
+	const { classes, autoFocus, value, ref, ...other } = inputProps;
 
-  return (
-    <TextField
-      autoFocus={autoFocus}
-      className={classes.textField}
-      value={value}
-	  type="search"
-      inputRef={ref}
-      InputProps={{
-        classes: {
-          input: classes.input,
-        },
-        ...other,
-      }}
-    />
-  );
+	return (
+		<TextField
+			autoFocus={autoFocus}
+			className={classes.textField}
+			value={value}
+			type="search"
+			inputRef={ref}
+			InputProps={{
+				classes: {
+					input: classes.input,
+				},
+				...other,
+			}}
+		/>
+	);
 }
 
 function renderSuggestion(suggestion, { query, isHighlighted }) {
-  const matches = match(suggestion.label, query);
-  const parts = parse(suggestion.label, matches);
+	const matches = match(suggestion.label, query);
+	const parts = parse(suggestion.label, matches);
 
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => {
-          return part.highlight ? (
-            <span key={String(index)} style={{ fontWeight: 300 }}>
-              {part.text}
-            </span>
-          ) : (
-            <strong key={String(index)} style={{ fontWeight: 500 }}>
-              {part.text}
-            </strong>
-          );
-        })}
-      </div>
-    </MenuItem>
-  );
+	return (
+		<MenuItem selected={isHighlighted} component="div">
+			<div>
+				{parts.map((part, index) => {
+					return part.highlight ? (
+						<span key={String(index)} style={{ fontWeight: 300 }}>
+							{part.text}
+						</span>
+					) : (
+							<strong key={String(index)} style={{ fontWeight: 500 }}>
+								{part.text}
+							</strong>
+						);
+				})}
+			</div>
+		</MenuItem>
+	);
 }
 
 function renderSuggestionsContainer(options) {
-  const { containerProps, children } = options;
+	const { containerProps, children } = options;
 
-  return (
-    <Paper {...containerProps} square>
-      {children}
-    </Paper>
-  );
+	return (
+		<Paper {...containerProps} square>
+			{children}
+		</Paper>
+	);
 }
 
 function getSuggestionValue(suggestion) {
-  return suggestion.label;
+	return suggestion.label;
 }
 
 function getSuggestions(value) {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
+	const inputValue = value.trim().toLowerCase();
+	const inputLength = inputValue.length;
+	let count = 0;
 
-  return inputLength === 0
-    ? []
-    : suggestions.filter(suggestion => {
-        const keep =
-          count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
+	return inputLength === 0
+		? []
+		: suggestions.filter(suggestion => {
+			const keep =
+				count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
 
-        if (keep) {
-          count += 1;
-        }
+			if (keep) {
+				count += 1;
+			}
 
-        return keep;
-      });
+			return keep;
+		});
 }
 
 const styles = theme => ({
-  container: {
-    flexGrow: 1,
-    position: 'relative',
-    zIndex: 1,
-  },
-  suggestionsContainerOpen: {
-    position: 'absolute',
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 3,
-    left: 0,
-    right: 0,
-  },
-  suggestion: {
-    display: 'block',
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
-  },
-  textField: {
-    width: '100%',
-  },
+	container: {
+		flexGrow: 1,
+		position: 'relative',
+		zIndex: 1,
+	},
+	suggestionsContainerOpen: {
+		position: 'absolute',
+		marginTop: theme.spacing.unit,
+		marginBottom: theme.spacing.unit * 3,
+		left: 0,
+		right: 0,
+	},
+	suggestion: {
+		display: 'block',
+	},
+	suggestionsList: {
+		margin: 0,
+		padding: 0,
+		listStyleType: 'none',
+	},
+	textField: {
+		width: '100%',
+	},
 });
 
 var id = 1;
@@ -128,57 +128,57 @@ var id = 1;
 class AddCoin extends Component {
 
 	constructor(props) {
-	    super(props);
-	    
-	    this.state = {
-	    	value: 'Bitcoin (BTC)',
-	    	amount: 2,
-	    	price: 14000,
+		super(props);
+
+		this.state = {
+			value: 'Bitcoin (BTC)',
+			amount: 2,
+			price: 14000,
 			currency: 'usd',
 			priceType: 'per',
 			date: formatDate(),
 			suggestions: [],
-  		};
-  	}
+		};
+	}
 
 	handleSuggestionsFetchRequested = ({ value }) => {
 		this.setState({
-		  suggestions: getSuggestions(value),
+			suggestions: getSuggestions(value),
 		});
 	};
 
 	handleSuggestionsClearRequested = () => {
 		this.setState({
-		  suggestions: [],
+			suggestions: [],
 		});
 	};
 
 	handleChange = (event, { newValue }) => {
 		this.setState({
-		  value: newValue,
+			value: newValue,
 		});
 		event.preventDefault()
 	};
 
 	handleInput = name => event => {
-	    this.setState({
-	      [name]: event.target.value,
-	    });
-  		event.preventDefault();
-  	};
+		this.setState({
+			[name]: event.target.value,
+		});
+		event.preventDefault();
+	};
 
-  	getCurrentPrice = event => {
-		var url = "https://min-api.cryptocompare.com/data/price?fsym=" + this.state.value.substring(this.state.value.indexOf("(")+1,this.state.value.indexOf(")")).toUpperCase() + "&tsyms=" + this.state.currency.toUpperCase();
-		if (this.state.priceType === "total"){
+	getCurrentPrice = event => {
+		var url = "https://min-api.cryptocompare.com/data/price?fsym=" + this.state.value.substring(this.state.value.indexOf("(") + 1, this.state.value.indexOf(")")).toUpperCase() + "&tsyms=" + this.state.currency.toUpperCase();
+		if (this.state.priceType === "total") {
 			const price = this.state.price / this.state.amount
 			this.setState({
-			  	...this.state,
-			  	price: price,
+				...this.state,
+				price: price,
 				loading: true
 			});
 		} else {
 			this.setState({
-			  	...this.state,
+				...this.state,
 				loading: true
 			});
 		}
@@ -188,19 +188,19 @@ class AddCoin extends Component {
 				const profit = parseFloat(((price - this.state.price) * this.state.amount).toFixed(2))
 
 				this.setState({
-				  	...this.state,
+					...this.state,
 					currentPrice: price,
 					profit: profit,
 					loading: false
 				}, () => {
-					this.props.coinData(this.state, this.state.value.substring((this.state.value).indexOf("(")+1,(this.state.value).indexOf(")")) + "-" + id);
-  					id++;
+					this.props.coinData(this.state, this.state.value.substring((this.state.value).indexOf("(") + 1, (this.state.value).indexOf(")")) + "-" + id);
+					id++;
 				});
 			})
-			.catch(err => {               
-	        	console.log(err)
-	        });
-  		event.preventDefault();
+			.catch(err => {
+				console.log(err)
+			});
+		event.preventDefault();
 	};
 
 	render() {
@@ -213,96 +213,96 @@ class AddCoin extends Component {
 						<Icon>close</Icon>
 					</IconButton>
 				</div>
-				{this.state.loading && <LinearProgress color="accent"/>}
+				{this.state.loading && <LinearProgress color="accent" />}
 				<form autoComplete="off" onSubmit={this.getCurrentPrice}>
 					<Autosuggest required id="required"
-				        theme={{
-				          container: classes.container,
-				          suggestionsContainerOpen: classes.suggestionsContainerOpen,
-				          suggestionsList: classes.suggestionsList,
-				          suggestion: classes.suggestion,
-				        }}
-				        className="autocomplete"
-				        renderInputComponent={renderInput}
-				        suggestions={this.state.suggestions}
-				        onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-				        onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-				        renderSuggestionsContainer={renderSuggestionsContainer}
-				        getSuggestionValue={getSuggestionValue}
-				        renderSuggestion={renderSuggestion}
-				        inputProps={{
-				          autoFocus: true,
-				          classes,
-				          placeholder: 'Type to search for a coin',
-				          value: this.state.value,
-				          onChange: this.handleChange,
-				        }}
-				    />
-				    <TextField
-			          required
-			          id="required"
-			          label="Amount"
-			          className="amount"
-			          margin="normal"
-			          color={"#e74c3c"}
-			          value={this.state.amount}
-			          onChange={this.handleInput('amount')}
-			        />
-			        <TextField
-			          required
-			          id="required"
-			          label="Trade Price"
-			          className="tradePrice"
-			          margin="normal"
-			          value={this.state.price}
-			          onChange={this.handleInput('price')}
-			        />
-			        <FormControl className="currency">
-				        <InputLabel htmlFor="currency">Currency</InputLabel>
-				        <Select
-				            value={this.state.currency}
-				            onChange={this.handleInput('currency')}
-				            input={<Input name="currency" id="currency" />}
-				        >
-				            <MenuItem value="usd">USD</MenuItem>
-				            <MenuItem value="cad">CAD</MenuItem>
-				            <MenuItem value="btc">BTC</MenuItem>
-				            <MenuItem value="eth">ETH</MenuItem>
-				        </Select>
-			        </FormControl>
-			        <FormControl className="priceType">
-				        <InputLabel htmlFor="priceType">Price Type</InputLabel>
-				        <Select color="secondary"
-				            value={this.state.priceType}
-				            onChange={this.handleInput('priceType')}
-				            input={<Input name="priceType" id="priceType" />}
-				        >
-				            <MenuItem value="total">Total Value</MenuItem>
-				            <MenuItem value="per">Per Unit</MenuItem>
-				        </Select>
-			        </FormControl>
-			        <TextField
-				        id="date"
-				        label="Trade Date"
-				        type="date"
-				        value={this.state.date}
-				        className="date"
-				        InputLabelProps={{
-				          shrink: true,
-				        }}
-				        onChange={this.handleInput('date')}
-				    />
-			        <Button raised type="submit" color="primary" className="addCoinButton" disabled={this.state.loading}>
-				        Add Coin
+						theme={{
+							container: classes.container,
+							suggestionsContainerOpen: classes.suggestionsContainerOpen,
+							suggestionsList: classes.suggestionsList,
+							suggestion: classes.suggestion,
+						}}
+						className="autocomplete"
+						renderInputComponent={renderInput}
+						suggestions={this.state.suggestions}
+						onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+						onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+						renderSuggestionsContainer={renderSuggestionsContainer}
+						getSuggestionValue={getSuggestionValue}
+						renderSuggestion={renderSuggestion}
+						inputProps={{
+							autoFocus: true,
+							classes,
+							placeholder: 'Type to search for a coin',
+							value: this.state.value,
+							onChange: this.handleChange,
+						}}
+					/>
+					<TextField
+						required
+						id="required"
+						label="Amount"
+						className="amount"
+						margin="normal"
+						color={"#e74c3c"}
+						value={this.state.amount}
+						onChange={this.handleInput('amount')}
+					/>
+					<TextField
+						required
+						id="required"
+						label="Trade Price"
+						className="tradePrice"
+						margin="normal"
+						value={this.state.price}
+						onChange={this.handleInput('price')}
+					/>
+					<FormControl className="currency">
+						<InputLabel htmlFor="currency">Currency</InputLabel>
+						<Select
+							value={this.state.currency}
+							onChange={this.handleInput('currency')}
+							input={<Input name="currency" id="currency" />}
+						>
+							<MenuItem value="usd">USD</MenuItem>
+							<MenuItem value="cad">CAD</MenuItem>
+							<MenuItem value="btc">BTC</MenuItem>
+							<MenuItem value="eth">ETH</MenuItem>
+						</Select>
+					</FormControl>
+					<FormControl className="priceType">
+						<InputLabel htmlFor="priceType">Price Type</InputLabel>
+						<Select color="secondary"
+							value={this.state.priceType}
+							onChange={this.handleInput('priceType')}
+							input={<Input name="priceType" id="priceType" />}
+						>
+							<MenuItem value="total">Total Value</MenuItem>
+							<MenuItem value="per">Per Unit</MenuItem>
+						</Select>
+					</FormControl>
+					<TextField
+						id="date"
+						label="Trade Date"
+						type="date"
+						value={this.state.date}
+						className="date"
+						InputLabelProps={{
+							shrink: true,
+						}}
+						onChange={this.handleInput('date')}
+					/>
+					<Button raised type="submit" color="primary" className="addCoinButton" disabled={this.state.loading}>
+						Add Coin
 				    </Button>
-			    </form>
+				</form>
 			</div>
 		);
 	}
 }
 
 AddCoin.propTypes = {
-  classes: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(AddCoin);

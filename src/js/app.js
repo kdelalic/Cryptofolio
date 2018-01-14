@@ -5,12 +5,11 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import amber from 'material-ui/colors/amber';
 import lightBlue from 'material-ui/colors/lightBlue';
 
-
 const theme = createMuiTheme({
-  palette: {
-    primary: amber, // Purple and green play nicely together.
-    secondary: lightBlue,
-  },
+	palette: {
+		primary: amber,
+		secondary: lightBlue,
+	},
 });
 
 class App extends Component {
@@ -18,7 +17,7 @@ class App extends Component {
 		return (
 			<div className="app">
 				<MuiThemeProvider theme={theme}>
-					<Crypto/>
+					<Crypto />
 				</MuiThemeProvider>
 			</div>
 		);
