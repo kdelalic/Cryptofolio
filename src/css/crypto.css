@@ -10,10 +10,6 @@
 	flex-direction: row;
 }
 
-.crypto .table {
-	/*width: 830px;*/
-}
-
 .crypto .header .add {
 	margin-left: 20px;
 	margin-top: 7px;
@@ -50,22 +46,14 @@
 	right: 24px;
 }
 
-.currencySelect *{
-	color: white!important;
+.rightSettings .jss97, .rightSettings .MuiFormLabel-focused-97 {
+	color: black;
 }
 
-.currencySelect .MuiInput-underline-111:before, .jss111:before {
-	background: white !important;
+.rightSettings .MuiInput-inkbar-107:after, .rightSettings .jss107:after {
+	background-color: black;
 }
 
-.currencySelect .MuiFormLabel-root-96, .jss96 {
-	color: white!important;
-}
-
-.currencySelect .MuiFormLabel-focused-97, .jss97 {
-	color: #9FA8DA!important;
-}
-
-.currencySelect.MuiInput-inkbar-107:after, .jss107:after {
-	background-color: #9FA8DA!important;
+.rightSettings .currencySelect {
+	margin-right: 20px;
 }

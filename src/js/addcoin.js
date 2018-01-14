@@ -272,7 +272,7 @@ class AddCoin extends Component {
 			        </FormControl>
 			        <FormControl className="priceType">
 				        <InputLabel htmlFor="priceType">Price Type</InputLabel>
-				        <Select
+				        <Select color="secondary"
 				            value={this.state.priceType}
 				            onChange={this.handleInput('priceType')}
 				            input={<Input name="priceType" id="priceType" />}

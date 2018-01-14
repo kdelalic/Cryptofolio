@@ -15,7 +15,7 @@
 	height: 12.5%;
 	width: 100%;
 	top: 0;
-	background:  #FF9800;
+	background:  #FFC107;
     border-radius: 5px 5px 0 0;
     position: relative;
 }
@@ -24,11 +24,12 @@
 	margin: 0;
 	top: 50%;
 	transform: translateY(-50%);
-	color: white;
+	color: black;
 	margin-left: 20px;
 	font-size: 20px;
 	position: absolute;
     left: 0;
+    font-weight: 300;
 }
 
 .header .closeButton {
@@ -37,10 +38,6 @@
     top: 50%;
     transform: translateY(-50%);
   	margin-right: 5px;
-}
-
-.header .closeButton > span > span {
-	color: white!important;
 }
 
 .addcoin form {
@@ -79,5 +76,4 @@
 
 .addcoin .addCoinButton {
 	align-self: flex-end;
-	background-color: #FFA726;
 }
