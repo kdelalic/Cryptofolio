@@ -106,6 +106,24 @@ class App extends Component {
 			console.log("LOGOUT ERROR" + error)
 		});
 	}
+
+	userPass = dataFromChild => {
+		this.firebaseRef.auth().signInWithEmailAndPassword(dataFromChild.username, dataFromChild.password).catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			console.log(errorCode + ": " + errorMessage)
+		});
+		
+	}
+
+	userRegister = dataFromChild => {
+		this.firebaseRef.auth().createUserWithEmailAndPassword(dataFromChild.username, dataFromChild.password).catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			console.log(errorCode + ": " + errorMessage)
+		});
+	}
+
 	render() {
 		return (
 			<div className="app">
@@ -130,7 +148,7 @@ class App extends Component {
 							</div>}
 						</Toolbar>
 					</AppBar>
-					{this.state.loading ? <CircularProgress className="loading" color="accent" /> : (this.state.user === null ? <Welcome handleLogin={this.handleLogin} /> : <Crypto convertCurrency={this.state.convertCurrency}/>) }
+					{this.state.loading ? <CircularProgress className="loading" color="accent" /> : (this.state.user === null ? <Welcome handleLogin={this.handleLogin} userPass={this.userPass} userRegister={this.userRegister}/> : <Crypto convertCurrency={this.state.convertCurrency}/>) }
 				</MuiThemeProvider>
 			</div>
 		);

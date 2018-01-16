@@ -3,30 +3,44 @@
     width: 450px;
     margin: auto;
     margin-top: 50px;
+    position: relative
 }
 
 .login {
-    padding: 100px;
+    padding: 65px 100px;
 }
 
 .login h1 {
     margin-top: 0px!important;
-    margin-bottom: 50px!important;
+    margin-bottom: 0px!important;
 }
 
 .buttons {
     margin:auto auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 250px
 }
 
 .buttons button {
     justify-content: left!important;
+    flex-grow: 1;
+    width: 100%;
+    padding: 8px 0!important
 }
 .facebook {
     background-color: #3b5998!important;
     color: white!important;
+    margin-right: 5px;
+}
+
+.facebook span svg {
+    left: 11px
+}
+
+.facebook span div {
+    width: 100%;
+    margin-left: 10px;
 }
 
 .facebook:hover {
@@ -36,6 +50,16 @@
 .google {
     background-color: #4285f4!important;
     color: white!important;
+    margin-left: 5px;
+}
+
+.google span svg {
+    left: 12px;
+}
+
+.google span div {
+    width: 100%;
+    margin-left: 10px;
 }
 
 .google:hover {
@@ -43,18 +67,17 @@
 }
 
 .fa-google, .fa-facebook-f {
-    margin-right: 20px;
-    width: 20px!important;
+    position: absolute;
 }
 
 .fa-google > div, .fa-facebook-f > div{
     width: auto;
 }
 
-.buttons > button {
-    margin-bottom: 20px;
-}
-
 .login img {
     height: 75px;
+}
+
+.welcome button {
+    margin-top: 20px;
 }

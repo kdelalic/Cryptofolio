@@ -1,0 +1,58 @@
+.register {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 5px;
+    width:400px
+}
+
+.register .header {
+	height: 50px;
+	width: 100%;
+	top: 0;
+	background:  #FFC107;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+}
+
+.register .header h2 {
+	margin: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	color: black;
+	margin-left: 20px;
+	font-size: 20px;
+	position: absolute;
+    left: 0;
+    font-weight: 300;
+}
+
+.register .header .closeButton {
+	position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  	margin-right: 5px;
+}
+
+.register form {
+	padding: 15px 65px 50px;
+	display: flex;
+	flex-flow: row wrap;
+	height: 100%;
+    box-sizing: border-box;
+}
+
+.register p {
+    margin: 0;
+    color: red;
+    font-size: 12px;
+    visibility: hidden;
+    font-weight:700;
+}
+
+.wrong {
+    visibility: visible!important;
+}
