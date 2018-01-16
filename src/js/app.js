@@ -6,12 +6,10 @@ import amber from 'material-ui/colors/amber';
 import lightBlue from 'material-ui/colors/lightBlue';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-// import Typography from 'material-ui/Typography';
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
-// import { formatDate } from './helpers.js'
 import Logo from '../img/logo.png'
 import Button from 'material-ui/Button';
 import { base } from './base.js'
@@ -108,9 +106,6 @@ class App extends Component {
 			console.log("LOGOUT ERROR" + error)
 		});
 	}
-	// <Typography type="title" color="inherit" className="middleTitle">
-	// UNDER DEVELOPMENT ({formatDate()})
-	// </Typography>
 	render() {
 		return (
 			<div className="app">
@@ -135,7 +130,7 @@ class App extends Component {
 							</div>}
 						</Toolbar>
 					</AppBar>
-					{this.state.loading ? <CircularProgress className="loading" color="accent" /> : (this.state.user === null ? <Welcome handleLogin={this.handleLogin} /> : <Crypto convertCurrency={this.state.convertCurrency} user={this.state.user}/>) }
+					{this.state.loading ? <CircularProgress className="loading" color="accent" /> : (this.state.user === null ? <Welcome handleLogin={this.handleLogin} /> : <Crypto convertCurrency={this.state.convertCurrency}/>) }
 				</MuiThemeProvider>
 			</div>
 		);
