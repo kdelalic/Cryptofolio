@@ -244,6 +244,7 @@ class AddCoin extends Component {
 						label="Amount"
 						className="amount"
 						margin="normal"
+						type="number"
 						color={"#e74c3c"}
 						value={this.state.amount}
 						onChange={this.handleInput('amount')}
@@ -252,6 +253,7 @@ class AddCoin extends Component {
 						required
 						id="required"
 						label="Trade Price"
+						type="number"
 						className="tradePrice"
 						margin="normal"
 						value={this.state.price}
