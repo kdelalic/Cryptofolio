@@ -113,9 +113,7 @@ class Crypto extends Component {
 	};
 
 	handleClose = () => {
-		this.setState({ ...this.state, open: false }, () => {
-			
-		});
+		this.setState({ ...this.state, open: false });
 	};
 
 	coinData = (dataFromChild, key) => {

@@ -131,7 +131,6 @@ class App extends Component {
 					<AppBar position="static" color="primary">
 						<Toolbar>
 							<a href="/" className="logo"><img src={Logo} alt="logo" /></a>
-							
 							{this.state.user && <div className="rightSettings">
 								<FormControl className="currencySelect">
 									<InputLabel htmlFor="convertCurrency">Currency</InputLabel>

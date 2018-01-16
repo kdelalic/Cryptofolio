@@ -14,7 +14,9 @@ class Register extends Component {
             username: "",
             password: '',
             confirm: '',
-            wrong: false
+            format: false,
+            wrong: false,
+            short: false
         }
     }
 
@@ -26,19 +28,41 @@ class Register extends Component {
     }
 
     handleSubmit = event => {
-        if(this.state.password !== this.state.confirm){
-            this.setState({
-                ...this.state,
-                wrong: true
-            })
-        } else {
-            const newUser = {
-                username: this.state.username,
-                password: this.state.password
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
+        this.setState({
+            ...this.state,
+            format: false,
+            wrong: false,
+            short: false
+        }, () => {
+            if(!re.test(this.state.username.toLowerCase())) {
+                this.setState({
+                    ...this.state,
+                    format: true
+                })
+            } else if(this.state.password !== this.state.confirm || this.state.password.length <= 6) {
+                if(this.state.password !== this.state.confirm){
+                    this.setState({
+                        ...this.state,
+                        wrong: true
+                    })
+                }
+                if(this.state.password.length < 6){
+                    this.setState({
+                        ...this.state,
+                        short: true
+                    })
+                }
+            } else  {
+                const newUser = {
+                    username: this.state.username,
+                    password: this.state.password
+                }
+                console.log(newUser)
+                this.props.userRegister(newUser)
             }
-            this.props.userRegister(newUser)
-            this.props.handleClose
-        }
+        })
         event.preventDefault();
     }
 
@@ -55,6 +79,7 @@ class Register extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <TextField
                         required
+                        error={this.state.format}
                         className="loginInput"
                         id="username"
                         label="Email"
@@ -62,8 +87,10 @@ class Register extends Component {
                         value={this.state.username}
                         onChange={this.handleChange("username")}
                     />
+                    <p className={this.state.format ? "visible" : ""}>Please enter a valid email address.</p>
                     <TextField
                         required
+                        error={this.state.short}
                         className="loginInput"
                         id="password"
                         label="Password"
@@ -73,8 +100,10 @@ class Register extends Component {
                         value={this.state.password}
                         onChange={this.handleChange("password")}
                     />
+                    <p className={this.state.short ? "visible" : ""}>Enter a password longer than 5 characters.</p>
                     <TextField
                         required
+                        error={this.state.wrong}
                         className="loginInput"
                         id="confirm"
                         label="Confirm Password"
@@ -84,7 +113,7 @@ class Register extends Component {
                         value={this.state.confirm}
                         onChange={this.handleChange("confirm")}
                     />
-                    <p className={this.state.wrong ? "wrong" : ""}>Please check that the passwords match.</p>
+                    <p className={this.state.wrong ? "visible" : ""}>Please check that the passwords match.</p>
                     <Button raised className="normal" color="primary" type="submit">Register</Button>
                 </form>
             </div>

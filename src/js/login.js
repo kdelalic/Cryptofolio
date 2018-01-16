@@ -44,6 +44,7 @@ class Login extends Component {
     }
 
     userRegister = dataFromChild => {
+        this.handleClose()
         this.props.userRegister(dataFromChild);
     }
 

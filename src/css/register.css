@@ -53,6 +53,10 @@
     font-weight:700;
 }
 
-.wrong {
+.visible {
     visibility: visible!important;
+}
+
+.register .loginInput {
+    margin-bottom: 0;
 }
