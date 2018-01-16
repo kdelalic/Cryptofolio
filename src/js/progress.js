@@ -18,6 +18,12 @@ class Progress extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		if(nextProps.CAD !== this.props.CAD) {
+			this.setState({
+				...this.state,
+				CAD: nextProps.CAD
+			})
+		}
 		if (nextProps.convertCurrency !== this.props.convertCurrency) {
 			this.setState({
 				...this.state,
@@ -55,7 +61,7 @@ class Progress extends Component {
 				<div className="cards">
 					<Paper className="stat">
 						<div className="content">
-							<h1 className={checkPos(this.state.initial)}>{currency + " " + this.state.initial.toFixed(2)}</h1>
+							<h1 className={checkPos((this.state.initial * (this.state.convertCurrency === "USD" ? 1 : this.state.CAD)))}>{currency + " " + (this.state.initial * (this.state.convertCurrency === "USD" ? 1 : this.state.CAD)).toFixed(2)}</h1>
 							<h2>Initial Investment</h2>
 						</div>
 					</Paper>
@@ -67,7 +73,7 @@ class Progress extends Component {
 					</Paper>
 					<Paper className="stat">
 						<div className="content">
-							<h1 className={checkPos(this.state.holdings)}>{currency + " " + this.state.holdings.toFixed(2)}</h1>
+							<h1 className={checkPos(this.state.holdings * (this.state.holdingsinitial * (this.state.convertCurrency === "USD" ? 1 : this.state.CAD)))}>{currency + " " +(this.state.holdings * (this.state.convertCurrency === "USD" ? 1 : this.state.CAD)).toFixed(2)}</h1>
 							<h2>Total Holdings</h2>
 						</div>
 					</Paper>

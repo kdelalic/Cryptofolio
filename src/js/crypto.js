@@ -4,23 +4,14 @@ import Progress from './progress.js'
 import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add'
+import Typography from 'material-ui/Typography'
 import AddCoin from './addcoin.js';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 import { checkPos, toMonth } from './helpers.js'
 import socketIOClient from "socket.io-client";
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import { formatDate } from './helpers.js'
-import Logo from '../img/logo.png'
 import axios from 'axios'
+import { base } from './base.js'
 
 const endpoint = "wss://streamer.cryptocompare.com";
 const socket = socketIOClient(endpoint);
@@ -31,12 +22,25 @@ class Crypto extends Component {
 
 		this.state = {
 			open: false,
+			loginOpen: false,
 			convertCurrency: 'USD',
 			subscriptions: {},
+			coins: {}
 		};
+
+		this.firebaseRef = base.initializedApp.firebase_;
 	}
 
 	componentWillMount() {
+		this.coinsRef = base.syncState('coins', {
+			context: this,
+			state: 'coins'
+		});
+		this.subsRef = base.syncState('subscriptions', {
+			context: this,
+			state: 'subscriptions'
+		});
+		socket.emit('SubAdd', { subs: this.state.subscriptions });
 		axios.get("https://api.fixer.io/latest?base=USD")
 			.then(response => {
 				const CAD = response.data["rates"]["CAD"];
@@ -48,7 +52,13 @@ class Crypto extends Component {
 			})
 			.catch(err => {               
 	        	console.log(err)
-	    });
+		});
+	}
+
+	componentWillUnmount() {
+		base.removeBinding(this.coinsRef);
+		base.removeBinding(this.subsRef);
+		socket.emit('SubRemove', { subs: this.state.subscriptions });
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -77,6 +87,35 @@ class Crypto extends Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (this.props.user !== nextProps.user) {
+			this.setState({
+				...this.state,
+				user: nextProps.user
+			})
+		}
+		if (this.props.convertCurrency !== nextProps.convertCurrency) {
+			socket.emit('SubRemove', { subs: this.state.subscriptions });
+			console.log(nextProps.convertCurrency)
+			this.setState({
+				...this.state,
+				convertCurrency: nextProps.convertCurrency
+			}, () => {
+				const newSub = {}
+				for (var key in this.state.subscriptions) {
+					const splitSub = this.state.subscriptions[key].split("~")
+					newSub[key] = splitSub[0] + "~" + splitSub[1] + "~" + splitSub[2] + "~" + this.state.convertCurrency
+				}
+				this.setState({
+					...this.state,
+					subscriptions: newSub
+				}, () => {
+					socket.emit('SubAdd', { subs: this.state.subscriptions });
+				})
+			})
+		}
+	}
+
 	handleOpen = () => {
 		this.setState({ ...this.state, open: true });
 	};
@@ -87,19 +126,24 @@ class Crypto extends Component {
 
 	coinData = (dataFromChild, key) => {
 		const addSub = "5~CCCAGG~" + dataFromChild.value.substring(dataFromChild.value.indexOf("(") + 1, dataFromChild.value.indexOf(")")) + "~" + this.state.convertCurrency
+		this.handleClose();
+
+		const userID = this.firebaseRef.auth().currentUser.uid;
 		this.setState({
 			...this.state,
-			subscriptions: {
-				...this.state.subscriptions,
-				[key]: addSub
-			},
-			coins: {
-				...this.state.coins,
-				[key]: dataFromChild
-			},
+			[userID] : {
+				...this.state.userID,
+				subscriptions: {
+					...this.state.subscriptions,
+					[key]: addSub
+				},
+				coins: {
+					...this.state.coins,
+					[key]: dataFromChild
+				},
+			}
 		}, () => {
 			socket.emit('SubAdd', { subs: this.state.subscriptions });
-			this.handleClose();
 		})
 	};
 
@@ -123,36 +167,23 @@ class Crypto extends Component {
 		})
 	}
 
+	handleNotLogin = () => {
+		this.setState({
+			loginOpen: true,
+		});
+	}
+
+	handleNotLoginClose = () => {
+		this.setState({
+			loginOpen: false,
+		});
+	}
+
 	render() {
 		const { coins } = this.state;
 		return (
 			<div className="crypto">
-				<AppBar position="static" color="primary">
-					<Toolbar>
-						<IconButton color="contrast" aria-label="Menu">
-							<MenuIcon />
-						</IconButton>
-						<a href="/" className="logo"><img src={Logo} alt="logo" /></a>
-						<Typography type="title" color="inherit" className="middleTitle">
-							UNDER DEVELOPMENT ({formatDate()})
-			          </Typography>
-						<div className="rightSettings">
-							<FormControl className="currencySelect">
-								<InputLabel htmlFor="convertCurrency">Currency</InputLabel>
-								<Select
-									value={this.state.convertCurrency}
-									onChange={this.handleChange}
-									input={<Input name="convertCurrency" id="convertCurrency" />}
-								>
-									<MenuItem value={"USD"}>USD</MenuItem>
-									<MenuItem value={"CAD"}>CAD</MenuItem>
-								</Select>
-							</FormControl>
-							<Button color="contrast">Login</Button>
-						</div>
-					</Toolbar>
-				</AppBar>
-				<Progress coins={this.state.coins} convertCurrency={this.state.convertCurrency} />
+				<Progress coins={this.state.coins} convertCurrency={this.state.convertCurrency} CAD={this.state.CAD} />
 				<div className="header container">
 					<Paper className="table">
 						<Table>
@@ -187,9 +218,24 @@ class Crypto extends Component {
 							</TableBody>
 						</Table>
 					</Paper>
-					<Button fab mini color="primary" aria-label="add" onClick={this.handleOpen} className="add">
+					<Button fab mini color="primary" aria-label="add" onClick={this.state.user !== null ? this.handleOpen : this.handleNotLogin} className="add">
 						<AddIcon />
 					</Button>
+					<Modal
+						aria-labelledby="not-logged-in"
+						aria-describedby="not-logged-in"
+						open={this.state.loginOpen}
+						onClose={this.handleNotLoginClose}
+						>
+						<div>
+							<Typography type="subheading" id="simple-modal-description">
+								Please login to use this function.
+							</Typography>
+							<Button raised onClick={this.handleNotLoginClose} color="primary">
+								OK
+							</Button>
+						</div>
+					</Modal>
 				</div>
 				<Modal
 					aria-labelledby="Add Coin"

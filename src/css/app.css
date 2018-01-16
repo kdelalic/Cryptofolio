@@ -45,6 +45,46 @@ html, body, .app {
 
 @media (min-width: 992px) {
   .container {
-    max-width: 960px;
+    max-width: 985px;
   }
+}
+
+.middleTitle {
+	position: absolute;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.rightSettings {
+	position: absolute!important;
+	right: 24px;
+}
+
+.rightSettings .jss97, .rightSettings .MuiFormLabel-focused-97 {
+	color: black;
+}
+
+.rightSettings .MuiInput-inkbar-107:after, .rightSettings .jss107:after {
+	background-color: black;
+}
+
+.rightSettings .currencySelect {
+	margin-right: 20px;
+}
+
+.logo {
+	line-height: 0;
+}
+
+.logo img {
+	height: 64px;
+}
+
+.loading {
+  height: 100px!important;
+  width: 100px!important;
+  position: absolute;
+  right: 50%;
+  bottom: 50%;
+  transform: translate(50%,50%);
 }

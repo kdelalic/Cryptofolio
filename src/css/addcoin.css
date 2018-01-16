@@ -77,3 +77,7 @@
 .addcoin .addCoinButton {
 	align-self: flex-end;
 }
+
+.hidden {
+	visibility: hidden;
+}

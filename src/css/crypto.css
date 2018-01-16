@@ -41,35 +41,3 @@
 .crypto .subMain {
 	color: #999;
 }
-
-.middleTitle {
-	position: absolute;
-    right: 50%;
-    transform: translateX(50%);
-}
-
-.rightSettings {
-	position: absolute!important;
-	right: 24px;
-}
-
-.rightSettings .jss97, .rightSettings .MuiFormLabel-focused-97 {
-	color: black;
-}
-
-.rightSettings .MuiInput-inkbar-107:after, .rightSettings .jss107:after {
-	background-color: black;
-}
-
-.rightSettings .currencySelect {
-	margin-right: 20px;
-}
-
-.logo {
-	line-height: 0;
-	margin-left: 10px
-}
-
-.logo img {
-	height: 50px;
-}
