@@ -31,7 +31,7 @@ class Crypto extends Component {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.userRef = base.syncState(this.userID, {
 			context: this,
 			state: this.userID
