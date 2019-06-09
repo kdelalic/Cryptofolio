@@ -1,4 +1,4 @@
- ## [DEMO](https://loving-morse-4f5653.netlify.com/)
+ ## [DEMO](https://cryptofolio-demo.netlify.com/)
 
 ![Login Screen](https://i.imgur.com/bjO4t3T.png "Login Screen")
 
