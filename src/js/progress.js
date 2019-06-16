@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../css/progress.css';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import { checkPos } from './helpers.js'
 
 class Progress extends Component {

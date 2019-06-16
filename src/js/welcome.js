@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../css/welcome.css';
 import Login from './login.js'
-import Button from 'material-ui/Button'
-import Paper from 'material-ui/Paper'
+import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 import Logo from '../img/logo.png'
 
 class Welcome extends Component {

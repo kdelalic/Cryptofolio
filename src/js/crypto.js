@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import '../css/crypto.css';
-import Progress from './progress.js'
-import Modal from 'material-ui/Modal'
-import Button from 'material-ui/Button';
-import AddIcon from 'material-ui-icons/Add'
-import AddCoin from './addcoin.js';
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
-import { checkPos, toMonth } from './helpers.js'
+import Modal from '@material-ui/core/Modal'
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add'
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import socketIOClient from "socket.io-client";
 import axios from 'axios'
+
+import Progress from './progress.js'
+import { checkPos, toMonth } from './helpers.js'
+import AddCoin from './addcoin.js';
 import { base } from './base.js'
 
 class Crypto extends Component {

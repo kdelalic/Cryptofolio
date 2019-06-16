@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../css/login.css';
-import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField';
 import Register from './register.js'
-import Modal from 'material-ui/Modal'
+import Modal from '@material-ui/core/Modal'
 
 class Login extends Component {
 

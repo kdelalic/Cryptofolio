@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import amber from '@material-ui/core/colors/amber';
+import lightBlue from '@material-ui/core/colors/lightBlue';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 import '../css/app.css';
+
 import Crypto from './crypto.js'
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import amber from 'material-ui/colors/amber';
-import lightBlue from 'material-ui/colors/lightBlue';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl } from 'material-ui/Form';
-import Select from 'material-ui/Select';
 import Logo from '../img/logo.png'
-import Button from 'material-ui/Button';
 import { base } from './base.js'
 import Welcome from './welcome.js'
-import {CircularProgress} from 'material-ui/Progress'
 
 const theme = createMuiTheme({
 	palette: {

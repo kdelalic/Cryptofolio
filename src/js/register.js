@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../css/register.css';
-import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField';
-import Icon from 'material-ui/Icon'
-import IconButton from 'material-ui/IconButton';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField';
+import Icon from '@material-ui/core/Icon'
+import IconButton from '@material-ui/core/IconButton';
 
 class Register extends Component {
 

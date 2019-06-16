@@ -79,5 +79,6 @@
 }
 
 .welcome button {
-    margin-top: 20px;
+  margin: 5px;
+  height: 40px;
 }
